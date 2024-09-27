@@ -201,4 +201,27 @@ contract TradeBridge {
 
         emit DisputeRaised(_defaulter, msg.sender, _commodityId, _report);
     }
+
+    function sellerRaiseDispute(address _defaulter, uint _commodityId, string memory _report) external {
+        require(userCommoditiesInvolved[_defaulter][_commodityId], "Error: The defaulter is not the buyer of this commodity");
+
+        bool isSeller = false;
+
+        for (uint i = 0; i < sales.length; i++) {
+            if (sales[i].commodityId == _commodityId && sales[i].seller == _defaulter && sales[i].buyer == msg.sender) {
+                isSeller = true;
+                break;
+            }
+        }
+
+        require(isSeller, "Error: You are not the seller of this commodity");
+        
+        disputes[_commodityId] = Dispute({
+            buyer: _defaulter,
+            seller: msg.sender,
+            report: _report
+        });
+
+        emit DisputeRaised(_defaulter, msg.sender, _commodityId, _report);
+    }
 }
