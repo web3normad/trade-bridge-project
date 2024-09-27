@@ -3,27 +3,20 @@ import { ethers } from 'ethers';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+  const [filter, setFilter] = useState('all'); // New state for filter
 
-  
   const contractAddress = "0xYourContractAddress"; 
   const contractABI = [ /* Your contract's ABI here */ ]; 
 
-  
   const fetchOrdersFromContract = async () => {
     try {
-     
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
-
-     
       const fetchedOrders = await contract.getOrders();
-
-    
       setOrders(fetchedOrders);
     } catch (error) {
       console.error("Error fetching orders: ", error);
@@ -32,33 +25,61 @@ const Orders = () => {
     }
   };
 
-  
   useEffect(() => {
     fetchOrdersFromContract();
   }, []);
 
+  // Filter orders based on the selected filter
+  const filteredOrders = orders.filter(order => {
+    if (filter === 'pending') return order.status === 'pending';
+    if (filter === 'complete') return order.status === 'approved';
+    return true; // For 'all' filter
+  });
+
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = orders.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(orders.length / itemsPerPage);
+  const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
 
   // Conditional rendering
   if (loading) {
-    return <div className="mt-16 mx-20">Loading orders...</div>; // Loading message
+    return <div className="mt-16 mx-20">Loading orders...</div>; 
   }
 
-  if (orders.length === 0) {
-    return <div className="mt-16 mx-20 text-center text-2xl">No orders available.</div>; // Show message if no orders
+  if (filteredOrders.length === 0) {
+    return <div className="mt-16 mx-20 text-center text-2xl">No orders available.</div>; 
   }
 
   return (
     <div className="mt-16 mx-20">
       <h1 className="text-3xl font-bold mb-4">Orders</h1>
+      
+      {/* Filter buttons */}
+      <div className="mb-4">
+        <button 
+          onClick={() => setFilter('all')}
+          className={`px-4 py-2 mr-2 rounded-lg ${filter === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'}`}
+        >
+          All
+        </button>
+        <button 
+          onClick={() => setFilter('pending')}
+          className={`px-4 py-2 mr-2 rounded-lg ${filter === 'pending' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'}`}
+        >
+          Pending
+        </button>
+        <button 
+          onClick={() => setFilter('complete')}
+          className={`px-4 py-2 rounded-lg ${filter === 'complete' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'}`}
+        >
+          Complete
+        </button>
+      </div>
+
       <div className="grid grid-cols-3 md:grid-cols-4 gap-10">
         {currentItems.map(order => (
           <div key={order.id} className="border w-80 h-80 rounded-xl p-4 bg-white shadow-md relative">
-            {/* Top section: Buyer's address and status */}
             <div className="flex justify-between mb-2">
               <p className="text-sm font-semibold">{order.buyer}</p>
               <p
@@ -70,16 +91,13 @@ const Orders = () => {
               </p>
             </div>
 
-            {/* Date row */}
             <div className="mb-2 flex">
               <p className="font-bold mr-2">Date:</p>
               <p>{order.date}</p>
             </div>
 
-            {/* Line separator */}
             <hr className="border-t border-gray-300 my-2" />
 
-            {/* Commodity information */}
             <div className="mb-2 space-y-3">
               <div className="flex justify-between">
                 <p className="font-bold mr-2">Commodity:</p>
@@ -95,15 +113,12 @@ const Orders = () => {
               </div>
             </div>
 
-            {/* Total amount */}
             <div className="mb-2 flex justify-between">
               <p className="font-bold">Total:</p>
               <p>${order.totalPrice}</p>
             </div>
 
-            {/* Line separator */}
             <hr className="border-t border-gray-300 my-2" />
-            {/* Approval button */}
             <div className='flex justify-center mt-8'>
               <button 
                 onClick={() => handleApprove(order.id)} 
@@ -117,7 +132,6 @@ const Orders = () => {
         ))}
       </div>
 
-      {/* Pagination controls */}
       <div className="flex justify-between mt-20">
         <button 
           onClick={() => setCurrentPage(currentPage - 1)} 

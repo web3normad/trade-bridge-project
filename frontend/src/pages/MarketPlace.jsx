@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import images from '../components/Images'
+import images from '../components/Images';
 
 const MarketPlace = () => {
   const navigate = useNavigate();
-
-  // Use the imported images instead of hardcoding them
   const agriculturalCommodities = images.agricultural;
   const solidMineralCommodities = images.solidMinerals;
 
-  // State to manage "Show More" visibility for each group
   const [showMoreAgri, setShowMoreAgri] = useState(false);
   const [showMoreSolid, setShowMoreSolid] = useState(false);
 
+  // Modal state
+  const [selectedCommodity, setSelectedCommodity] = useState(null);
+
   const handleShowMore = (group) => {
-    if (group === 'agricultural') setShowMoreAgri(!showMoreAgri);
-    if (group === 'solid') setShowMoreSolid(!showMoreSolid);
-    navigate(`/marketplace/${group}`);
+    navigate(`/marketplace/${group}`, { state: { group } }); // Pass group as state
+  };
+
+  const handleCardClick = (commodity) => {
+    setSelectedCommodity(commodity);
+  };
+
+  const handlePurchaseClick = () => {
+    // Pass the selected commodity details (including seller's address) to the Purchase page
+    navigate('/buyer-dashboard/purchase-commodity', { state: { commodity: selectedCommodity } });
   };
 
   return (
@@ -26,11 +33,11 @@ const MarketPlace = () => {
         <h1 className='text-2xl font-bold mb-4'>Agricultural Commodities</h1>
         <div className='grid grid-cols-5 gap-12'>
           {agriculturalCommodities.slice(0, showMoreAgri ? agriculturalCommodities.length : 5).map((commodity, index) => (
-            <div key={index} className='border rounded-lg shadow-md w-72'>
+            <div key={index} className='border rounded-lg shadow-md w-72 cursor-pointer' onClick={() => handleCardClick(commodity)}>
               <div className='h-48 overflow-hidden mb-4'>
-                <img src={commodity.image} alt={commodity.name} className='h-full w-full object-cover rounded-t-lg' />
+                <img src={commodity.image} alt={commodity.name} className='h-full w-full object-contain rounded-t-lg' />
               </div>
-              <div className='p-2 h-24 bg-white rounded-b-lg'>
+              <div className='p-2 h-28 bg-white rounded-b-lg'>
                 <h2 className='text-lg font-semibold mb-2'>{commodity.name}</h2>
                 <div className='space-y-1'>
                   <div className='flex justify-between'>
@@ -49,9 +56,9 @@ const MarketPlace = () => {
         <div className='flex justify-end'>
           <button
             onClick={() => handleShowMore('agricultural')}
-            className='mt-4 px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-800'
+            className='mt-4 px-6 py-2 text-white bg-primary-200 rounded-full hover:bg-primary-300'
           >
-            {showMoreAgri ? 'Show Less' : 'Show More'}
+            Show More
           </button>
         </div>
       </div>
@@ -61,11 +68,11 @@ const MarketPlace = () => {
         <h1 className='text-2xl font-bold mb-4'>Solid Mineral Commodities</h1>
         <div className='grid grid-cols-5 gap-12'>
           {solidMineralCommodities.slice(0, showMoreSolid ? solidMineralCommodities.length : 5).map((commodity, index) => (
-            <div key={index} className='border rounded-lg shadow-md w-72'>
-              <div className='h-48 overflow-hidden mb-4'>
+            <div key={index} className='border rounded-lg shadow-md w-72 cursor-pointer' onClick={() => handleCardClick(commodity)}>
+              <div className='h-40 overflow-hidden mb-4'>
                 <img src={commodity.image} alt={commodity.name} className='h-full w-full object-cover rounded-t-lg' />
               </div>
-              <div className='p-2 h-24 bg-white rounded-b-lg'>
+              <div className='p-2 h-40 bg-white rounded-b-lg'>
                 <h2 className='text-lg font-semibold mb-2'>{commodity.name}</h2>
                 <div className='space-y-1'>
                   <div className='flex justify-between'>
@@ -73,7 +80,7 @@ const MarketPlace = () => {
                     <p>{commodity.available}</p>
                   </div>
                   <div className='flex justify-between'>
-                    <p>Price per Kilogram</p>
+                    <p>Price per Ton</p>
                     <p>{commodity.price}</p>
                   </div>
                 </div>
@@ -84,12 +91,38 @@ const MarketPlace = () => {
         <div className='flex justify-end'>
           <button
             onClick={() => handleShowMore('solid')}
-            className='mt-4 px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-800'
+            className='mt-4 px-6 py-2 text-gray-700 bg-primary-200 rounded-full hover:bg-primary-300'
           >
-            {showMoreSolid ? 'Show Less' : 'Show More'}
+            Show More
           </button>
         </div>
       </div>
+
+      {/* Commodity Modal */}
+      {selectedCommodity && (
+        <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
+          <div className='bg-white p-6 rounded-lg w-1/3'>
+            <h2 className='text-2xl font-bold mb-4'>{selectedCommodity.name}</h2>
+            <p><strong>Available:</strong> {selectedCommodity.available}</p>
+            <p><strong>Price per Kilogram:</strong> {selectedCommodity.price}</p>
+            <p><strong>Seller Address:</strong> {selectedCommodity.sellerAddress}</p>
+            <div className='mt-6'>
+              <button
+                onClick={handlePurchaseClick}
+                className='px-6 py-2 text-white bg-primary-200 rounded hover:bg-blue-800'
+              >
+                Purchase
+              </button>
+              <button
+                onClick={() => setSelectedCommodity(null)}
+                className='ml-4 px-6 py-2 text-white bg-red-600 rounded hover:bg-red-800'
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
