@@ -41,6 +41,7 @@ contract TradeBridge {
         address buyer;
         address seller;
         string report;
+        bool isResolved;
     }
 
     Commodity[] public allCommodities;
@@ -54,7 +55,7 @@ contract TradeBridge {
     event CommodityAdded(address indexed seller, uint commodityId, string commodityTitle, string commodityDescription, uint commodityQuantity, string quantityMeasurement, string imageOne, string imageTwo, string imageThree, string imageFour, uint createdAt, string commodityLocation);
     event Rating(address indexed seller, bool rating);
     event DisputeRaised(address indexed defaulter, address indexed reporter, uint commodityId, string report);
-    event DisputeResolved(address indexed defaulter, address indexed reporter);
+    event DisputeResolved(address indexed defaulter, address indexed reporter, uint commodityId);
     event CommodityReceived(address indexed buyer, uint commodityId);
 
     constructor() {
@@ -125,7 +126,7 @@ contract TradeBridge {
         require(commodity.commodityQuantity >= _quantity, "Error: Commodity quantity is lower than your quantity");
         require(_quantity > 0, "Error: Quantity cannot be zero");
 
-        uint totalAmount = commodity.pricePerQuantity * _quantity;
+        uint totalAmount = (commodity.pricePerQuantity * _quantity)+transactionFee;
         require(ITBTK(address(this)).balanceOf(msg.sender) >= totalAmount, "Error: Insufficient balance");
 
         ITBTK(address(this)).transfer(address(this), totalAmount);
@@ -196,32 +197,35 @@ contract TradeBridge {
         disputes[_commodityId] = Dispute({
             buyer: msg.sender,
             seller: _defaulter,
-            report: _report
+            report: _report,
+            isResolved: false
         });
 
         emit DisputeRaised(_defaulter, msg.sender, _commodityId, _report);
     }
 
-    function sellerRaiseDispute(address _defaulter, uint _commodityId, string memory _report) external {
-        require(userCommoditiesInvolved[_defaulter][_commodityId], "Error: The defaulter is not the buyer of this commodity");
+    function resolveDispute(uint _commodityId) external onlyOwner {
+        require(disputes[_commodityId].buyer != address(0), "Error: No dispute found.");
+        require(!disputes[_commodityId].isResolved, "Error: This dispute has been resolved");
 
-        bool isSeller = false;
-
+        Commodity storage commodity = allCommodities[_commodityId - 1];
+        
+        Sale memory sale;
+        bool saleFound = false;
         for (uint i = 0; i < sales.length; i++) {
-            if (sales[i].commodityId == _commodityId && sales[i].seller == _defaulter && sales[i].buyer == msg.sender) {
-                isSeller = true;
+            if (sales[i].buyer == msg.sender && sales[i].commodityId == _commodityId) {
+                sale = sales[i];
+                saleFound = true;
                 break;
             }
         }
-
-        require(isSeller, "Error: You are not the seller of this commodity");
         
-        disputes[_commodityId] = Dispute({
-            buyer: _defaulter,
-            seller: msg.sender,
-            report: _report
-        });
+        uint totalAmount = commodity.pricePerQuantity * sale.quantity;
 
-        emit DisputeRaised(_defaulter, msg.sender, _commodityId, _report);
+        ITBTK(address(this)).transfer(disputes[_commodityId].buyer, totalAmount);
+
+        disputes[_commodityId].isResolved = true;
+
+        emit DisputeResolved(disputes[_commodityId].seller, disputes[_commodityId].buyer, _commodityId);
     }
 }
