@@ -52,6 +52,11 @@ contract TradeBridge {
         nextCommodityId = 1;
     }
 
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Error: You are not the owner");
+        _;
+    }
+
     function addCommodity(
         string memory _commodityTitle,
         string memory _commodityDescription,
@@ -124,5 +129,9 @@ contract TradeBridge {
         }));
 
         emit CommodityPurchased(msg.sender, _commodityId, _quantity, totalAmount);
+    }
+
+    function setTransactionFee(uint _fee) external onlyOwner {
+        transactionFee = _fee;
     }
 }
