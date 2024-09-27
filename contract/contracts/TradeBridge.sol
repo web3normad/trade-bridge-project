@@ -1,17 +1,22 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
 
+import "./TradeBridgeFC.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
+
 interface ITBTK {
     function balanceOf(address account) external view returns (uint);
     function transfer(address recipient, uint amount) external returns (bool);
 }
 
-contract TradeBridge {
+contract TradeBridge is ERC1155Holder {
     uint public transactionFee;
     uint public transactionCount;
-    uint public transactionId;
     uint public nextCommodityId;
     address public owner;
+    ITBTK public tbtkToken;
 
     struct Commodity {
         uint commodityId;
@@ -24,6 +29,7 @@ contract TradeBridge {
         string imageTwo;
         string imageThree;
         string imageFour;
+        address nftContract;
         string commodityLocation;
         bool isAvailable;
         bool hasReceived;
@@ -49,18 +55,18 @@ contract TradeBridge {
 
     mapping(address => uint[]) public userCommodities;
     mapping(address => mapping(uint => bool)) public userCommoditiesInvolved;
-    mapping(uint => Dispute) disputes;
+    mapping(uint => Dispute) public disputes;
 
     event CommodityPurchased(address indexed buyer, uint commodityId, uint quantity, uint amount);
     event CommodityAdded(address indexed seller, uint commodityId, string commodityTitle, string commodityDescription, uint commodityQuantity, string quantityMeasurement, string imageOne, string imageTwo, string imageThree, string imageFour, uint createdAt, string commodityLocation);
-    event Rating(address indexed seller, bool rating);
     event DisputeRaised(address indexed defaulter, address indexed reporter, uint commodityId, string report);
     event DisputeResolved(address indexed defaulter, address indexed reporter, uint commodityId);
     event CommodityReceived(address indexed buyer, uint commodityId);
 
-    constructor() {
+    constructor(address _tbtkToken) {
         owner = msg.sender;
         nextCommodityId = 1;
+        tbtkToken = ITBTK(_tbtkToken);
     }
 
     modifier onlyOwner() {
@@ -80,6 +86,10 @@ contract TradeBridge {
         string memory _imageFour,
         string memory _commodityLocation
     ) public {
+        TBNFT newNFT = new TBNFT(msg.sender);
+        
+        newNFT.mint(msg.sender, nextCommodityId, _commodityQuantity, "");
+
         Commodity memory newCommodity = Commodity({
             commodityId: nextCommodityId,
             commodityTitle: _commodityTitle,
@@ -92,6 +102,7 @@ contract TradeBridge {
             imageThree: _imageThree,
             imageFour: _imageFour,
             createdAt: block.timestamp,
+            nftContract: address(newNFT),
             commodityLocation: _commodityLocation,
             hasReceived: false,
             isAvailable: true
@@ -99,7 +110,7 @@ contract TradeBridge {
         
         allCommodities.push(newCommodity);
         userCommodities[msg.sender].push(nextCommodityId);
-
+        
         emit CommodityAdded(msg.sender, nextCommodityId, _commodityTitle, _commodityDescription, _commodityQuantity, _quantityMeasurement, _imageOne, _imageTwo, _imageThree, _imageFour, block.timestamp, _commodityLocation);
 
         nextCommodityId++;
@@ -126,16 +137,18 @@ contract TradeBridge {
         require(commodity.commodityQuantity >= _quantity, "Error: Commodity quantity is lower than your quantity");
         require(_quantity > 0, "Error: Quantity cannot be zero");
 
-        uint totalAmount = (commodity.pricePerQuantity * _quantity)+transactionFee;
-        require(ITBTK(address(this)).balanceOf(msg.sender) >= totalAmount, "Error: Insufficient balance");
+        uint totalAmount = (commodity.pricePerQuantity * _quantity) + transactionFee;
+        require(tbtkToken.balanceOf(msg.sender) >= totalAmount, "Error: Insufficient balance");
 
-        ITBTK(address(this)).transfer(address(this), totalAmount);
+        require(tbtkToken.transferFrom(msg.sender, address(this), totalAmount), "Error: Transfer failed");
+
+        IERC1155(commodity.nftContract).safeTransferFrom(commodity.nftContract, msg.sender, _commodityId, _quantity, "");
 
         commodity.commodityQuantity -= _quantity;
 
         sales.push(Sale({
             buyer: msg.sender,
-            seller: msg.sender,
+            seller: commodity.nftContract,
             commodityId: _commodityId,
             quantity: _quantity
         }));
@@ -170,12 +183,12 @@ contract TradeBridge {
         require(saleFound, "Error: Sale not found");
 
         Commodity storage commodity = allCommodities[_commodityId - 1];
-        commodity.isAvailable = false;
+        commodity.hasReceived = true;
         
         uint totalAmount = commodity.pricePerQuantity * sale.quantity;
-        require(ITBTK(address(this)).balanceOf(address(this)) >= totalAmount, "Error: Insufficient contract balance to transfer to seller");
+        require(tbtkToken.balanceOf(address(this)) >= totalAmount, "Error: Insufficient contract balance to transfer to seller");
         
-        ITBTK(address(this)).transfer(sale.seller, totalAmount);
+        require(tbtkToken.transfer(sale.seller, totalAmount), "Error: Transfer to seller failed");
 
         emit CommodityReceived(msg.sender, _commodityId);
     }
@@ -213,16 +226,18 @@ contract TradeBridge {
         Sale memory sale;
         bool saleFound = false;
         for (uint i = 0; i < sales.length; i++) {
-            if (sales[i].buyer == msg.sender && sales[i].commodityId == _commodityId) {
+            if (sales[i].commodityId == _commodityId) {
                 sale = sales[i];
                 saleFound = true;
                 break;
             }
         }
         
+        require(saleFound, "Error: Sale not found");
+
         uint totalAmount = commodity.pricePerQuantity * sale.quantity;
 
-        ITBTK(address(this)).transfer(disputes[_commodityId].buyer, totalAmount);
+        require(tbtkToken.transfer(disputes[_commodityId].buyer, totalAmount), "Error: Transfer to buyer failed");
 
         disputes[_commodityId].isResolved = true;
 
