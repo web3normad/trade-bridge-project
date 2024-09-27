@@ -11,6 +11,7 @@ import Dispute from './pages/sellerDashboard/Dispute';
 import CreateCommodity from "./pages/sellerDashboard/createCommodity";
 import Orders from "./pages/sellerDashboard/Orders";
 import MarketPlace from "./pages/MarketPlace";
+import MyCommodity from "./pages/sellerDashboard/MyCommodity";
 
 function App() {
   const [signer, setSigner] = useState(null);
@@ -81,7 +82,9 @@ function App() {
             {/* Nested routes for the Seller Dashboard */}
             <Route path="create-commodity" element={<CreateCommodity />} />
             <Route path="orders" element={<Orders />} />
+            <Route path="my-commodity" element={<MyCommodity />} />
             <Route path="dispute" element={<Dispute />} />
+
           </Route>
           <Route path="/hero" element={<Hero />} />
           <Route path="/market-place" element={<MarketPlace signer={signer} />} />

@@ -92,9 +92,9 @@ const Header = ({ setSigner, setAccount }) => {
         isScrolled ? "bg-slate-200 shadow-lg" : "bg-slate-200"
       }`}
     >
-      <div className="flex px-2 py-2 items-center mx-28">
+      <div className="flex px-2 py-2 items-center mx-10">
         <div className="flex items-center">
-          <Link to="/staking">
+          <Link to="/market-place">
             <div className="flex items-center">
               <img src={Logo} alt="Trade Bridge Logo" className="w-20" />
               <div className="border-l-2 border-primary-100 px-2 text-black">

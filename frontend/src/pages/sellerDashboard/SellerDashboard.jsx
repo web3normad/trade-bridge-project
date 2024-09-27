@@ -5,7 +5,7 @@ const SellerDashboard = ({ signer }) => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-72 rounded-e-3xl bg-primary-200 text-black text-xl p-4">
+      <aside className="w-72  bg-primary-200  text-black text-xl  p-4">
         <ul className="space-y-2 mt-24">
           <li>
             <Link to="create-commodity" className="block p-2 hover:bg-primary-100 rounded-xl">
@@ -18,7 +18,7 @@ const SellerDashboard = ({ signer }) => {
             </Link>
           </li>
           <li>
-            <Link to="view-commodity" className="block p-2 hover:bg-primary-100 rounded-xl">
+            <Link to="my-commodity" className="block p-2 hover:bg-primary-100 rounded-xl">
               My Commodity
             </Link>
           </li>
