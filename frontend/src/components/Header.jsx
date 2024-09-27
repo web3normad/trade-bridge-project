@@ -3,6 +3,7 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Logo from "../assets/images/trade-bridge.svg";
 import { ethers } from "ethers";
+import Buttons from "./Buttons"
 
 const Header = ({ setSigner, setAccount }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -95,7 +96,7 @@ const Header = ({ setSigner, setAccount }) => {
         <div className="flex items-center">
           <Link to="/staking">
             <div className="flex items-center">
-              <img src={Logo} alt="Trade Bridge Logo" className="w-40" />
+              <img src={Logo} alt="Trade Bridge Logo" className="w-20" />
               <div className="border-l-2 border-primary-100 px-2 text-black">
                 <h1 className="font-bold text-2xl">Trade Bridge</h1>
               </div>
@@ -119,12 +120,12 @@ const Header = ({ setSigner, setAccount }) => {
 
             <div className="relative">
               {!account ? (
-                <button
+                <Buttons
                   onClick={connectWallet}
                   className="bg-primary-300 text-white flex items-center gap-1 px-8 py-3 rounded-md focus:outline-none"
                 >
                   Connect Wallet
-                </button>
+                </Buttons>
               ) : (
                 <div className="relative">
                   <button

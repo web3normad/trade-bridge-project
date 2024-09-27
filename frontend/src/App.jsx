@@ -69,24 +69,13 @@ function App() {
 
   const location = useLocation();
 
-  // Define an array of paths where the Header should be hidden
-  const noHeaderPaths = [
-    "/",
-    "/seller-dashboard",
-    "/create-commodity",
-    "/orders",
-    "/dispute",
-  ];
-
   return (
     <div className="App flex flex-col min-h-screen">
-      {/* Navbar (Header) - Only visible on routes not in the noHeaderPaths array */}
-      {!noHeaderPaths.includes(location.pathname) && (
-        <Header setSigner={setSigner} setAccount={setAccount} />
-      )}
+      {/* Navbar (Header) - visible on all routes */}
+      <Header setSigner={setSigner} setAccount={setAccount} />
 
       {/* Main content */}
-      <main className="flex-grow flex h-full items-center bg-primary-100">
+      <main className="flex-grow w-full h-full bg-primary-100">
         <Routes>
           <Route path="/" element={<SellerDashboard signer={signer} />}>
             {/* Nested routes for the Seller Dashboard */}
