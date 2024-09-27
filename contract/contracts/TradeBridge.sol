@@ -37,11 +37,18 @@ contract TradeBridge {
         uint quantity;
     }
 
+    struct Dispute {
+        address buyer;
+        address seller;
+        string report;
+    }
+
     Commodity[] public allCommodities;
     Sale[] public sales;
 
     mapping(address => uint[]) public userCommodities;
     mapping(address => mapping(uint => bool)) public userCommoditiesInvolved;
+    mapping(uint => Dispute) disputes;
 
     event CommodityPurchased(address indexed buyer, uint commodityId, uint quantity, uint amount);
     event CommodityAdded(address indexed seller, uint commodityId, string commodityTitle, string commodityDescription, uint commodityQuantity, string quantityMeasurement, string imageOne, string imageTwo, string imageThree, string imageFour, uint createdAt, string commodityLocation);
@@ -170,5 +177,28 @@ contract TradeBridge {
         ITBTK(address(this)).transfer(sale.seller, totalAmount);
 
         emit CommodityReceived(msg.sender, _commodityId);
+    }
+
+    function buyerRaiseDispute(address _defaulter, uint _commodityId, string memory _report) external {
+        require(userCommoditiesInvolved[msg.sender][_commodityId], "Error: You cannot raise a dispute for this commodity");
+
+        bool isSeller = false;
+
+        for (uint i = 0; i < sales.length; i++) {
+            if (sales[i].commodityId == _commodityId && sales[i].seller == _defaulter && sales[i].buyer == msg.sender) {
+                isSeller = true;
+                break;
+            }
+        }
+
+        require(isSeller, "Error: The defaulter is not the seller of this commodity");
+        
+        disputes[_commodityId] = Dispute({
+            buyer: msg.sender,
+            seller: _defaulter,
+            report: _report
+        });
+
+        emit DisputeRaised(_defaulter, msg.sender, _commodityId, _report);
     }
 }
