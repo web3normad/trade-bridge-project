@@ -3,30 +3,41 @@ import { Link, Outlet } from 'react-router-dom';
 
 const BuyerDashboard = ({ signer }) => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-72 bg-primary-200 text-black text-xl p-4">
-        <ul className="space-y-2 mt-24">
+      <aside className="w-72 bg-primary-200 text-black text-lg p-6 shadow-lg">
+        <h1 className="text-2xl font-bold mb-6">Buyer Dashboard</h1>
+        <ul className="space-y-4">
           <li>
-            <Link to="purchase-commodity" className="block p-2 hover:bg-primary-100 rounded-xl">
-              Purchase Commodity
-            </Link>
-          </li>
-          <li>
-            <Link to="my-purchases" className="block p-2 hover:bg-primary-100 rounded-xl">
+            <Link
+              to="view-purchase"
+              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+            >
               View My Purchases
             </Link>
           </li>
           <li>
-            <Link to="dispute" className="block p-2 hover:bg-primary-100 rounded-xl">
+            <Link
+              to="dispute-sale"
+              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+            >
               Dispute
             </Link>
           </li>
+          {/* You can uncomment this if you want to add back the purchase commodity link */}
+          {/* <li>
+            <Link
+              to="purchase-commodity"
+              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+            >
+              Purchase Commodity
+            </Link>
+          </li> */}
         </ul>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-8">
         <Outlet /> {/* Renders the matched child route component */}
       </main>
     </div>

@@ -14,18 +14,22 @@ const Header = ({ setSigner, setAccount }) => {
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const connectWallet = async () => {
-    console.log("Connect Wallet button clicked");
-    
     if (typeof window.ethereum !== "undefined") {
       console.log("MetaMask detected");
       try {
-        // Use Web3Provider instead of BrowserProvider
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await provider.send("eth_requestAccounts", []);
+        // Create a new provider using ethers.BrowserProvider
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        
+        // Request account access
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        
+        // Get the signer and accounts
+        const userSigner = await provider.getSigner();
         const accounts = await provider.listAccounts();
-        setAccount(accounts[0]);
-        const userSigner = provider.getSigner();
+        
         setSigner(userSigner);
+        setAccount(accounts[0]);
+        console.log("Connected account:", accounts[0]);
       } catch (error) {
         if (error.code === 4001) {
           console.error("User rejected the request.");
@@ -39,7 +43,7 @@ const Header = ({ setSigner, setAccount }) => {
       alert("MetaMask not installed. Please install it to proceed.");
     }
   };
-  
+
   
 
   const disconnectWallet = () => {

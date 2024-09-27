@@ -3,27 +3,40 @@ import { Link, Outlet } from 'react-router-dom';
 
 const SellerDashboard = ({ signer }) => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-72  bg-primary-200  text-black text-xl  p-4">
-        <ul className="space-y-2 mt-24">
+      <aside className="w-72 bg-primary-200 text-black text-lg p-6 shadow-lg">
+        <h1 className="text-2xl font-bold mb-6">Seller Dashboard</h1>
+        <ul className="space-y-4">
           <li>
-            <Link to="create-commodity" className="block p-2 hover:bg-primary-100 rounded-xl">
+            <Link
+              to="create-commodity"
+              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+            >
               Create Commodity
             </Link>
           </li>
           <li>
-            <Link to="orders" className="block p-2 hover:bg-primary-100 rounded-xl">
+            <Link
+              to="orders"
+              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+            >
               Orders
             </Link>
           </li>
           <li>
-            <Link to="my-commodity" className="block p-2 hover:bg-primary-100 rounded-xl">
+            <Link
+              to="my-commodity"
+              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+            >
               My Commodity
             </Link>
           </li>
           <li>
-            <Link to="dispute" className="block p-2 hover:bg-primary-100 rounded-xl">
+            <Link
+              to="dispute"
+              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+            >
               Dispute
             </Link>
           </li>
@@ -31,7 +44,7 @@ const SellerDashboard = ({ signer }) => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-8">
         <Outlet /> {/* Renders the matched child route component */}
       </main>
     </div>

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import './App.css';
 import Header from './components/Header';
-import Footer from './components/Footer';
 import Hero from './pages/Hero';
 import BuyerDashboard from './pages/buyerDashboard/BuyerDashboard';
 import SellerDashboard from './pages/sellerDashboard/SellerDashboard';
@@ -13,6 +12,7 @@ import Orders from "./pages/sellerDashboard/Orders";
 import MarketPlace from "./pages/MarketPlace";
 import MyCommodity from "./pages/sellerDashboard/MyCommodity";
 import PurchaseCommodity from "./pages/buyerDashboard/Purchase";
+import ViewPurchase from "./pages/buyerDashboard/ViewPurchase";
 import DisputeSale from "./pages/buyerDashboard/Dispute";
 
 function App() {
@@ -23,17 +23,19 @@ function App() {
     if (typeof window.ethereum !== "undefined") {
       console.log("MetaMask detected");
       try {
-        // Create a new provider using ethers.providers.Web3Provider
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // Create a new provider using ethers.BrowserProvider
+        const provider = new ethers.BrowserProvider(window.ethereum);
         
         // Request account access
         await window.ethereum.request({ method: "eth_requestAccounts" });
         
-        const userSigner = provider.getSigner();
+        // Get the signer and accounts
+        const userSigner = await provider.getSigner();
         const accounts = await provider.listAccounts();
         
         setSigner(userSigner);
         setAccount(accounts[0]);
+        console.log("Connected account:", accounts[0]);
       } catch (error) {
         if (error.code === 4001) {
           console.error("User rejected the request.");
@@ -62,7 +64,7 @@ function App() {
       {/* Main content */}
       <main className="flex-grow w-full h-full bg-primary-100">
         <Routes>
-          <Route path="/seller-dashboard" element={<SellerDashboard signer={signer} />}>
+          <Route path="/" element={<SellerDashboard signer={signer} />}>
             {/* Nested routes for the Seller Dashboard */}
             <Route path="create-commodity" element={<CreateCommodity />} />
             <Route path="orders" element={<Orders />} />
@@ -72,15 +74,16 @@ function App() {
           <Route path="/buyer-dashboard" element={<BuyerDashboard signer={signer} />}>
             {/* Nested routes for the Buyer Dashboard */}
             <Route path="purchase-commodity" element={<PurchaseCommodity />} />
+            <Route path="view-purchase" element={<ViewPurchase />} />
             <Route path="dispute-sale" element={<DisputeSale />} />
           </Route>
           <Route path="/hero" element={<Hero />} />
-          <Route path="/" element={<MarketPlace signer={signer} />} />
+          <Route path="/market-place" element={<MarketPlace signer={signer} />} />
         </Routes>
       </main>
 
       {/* Footer */}
-      <Footer />
+      
     </div>
   );
 }
