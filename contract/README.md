@@ -1,7 +1,5 @@
 # Trade Bridge
 
-## Description
-
 &nbsp;&nbsp;&nbsp;&nbsp; **Trade Bridge** is a decentralized commodity exchange platform that allows buyers and sellers to trade commodities in a trustless environment using blockchain technology. The platform incorporates tokenization, decentralized and NFT minting/burning to represent commodity ownership. It also handles disputes between parties and includes a fee system to sustain platform operations
 
 ## Table of Contents
