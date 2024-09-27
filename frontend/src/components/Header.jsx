@@ -91,13 +91,13 @@ const Header = ({ setSigner, setAccount }) => {
         isScrolled ? "bg-slate-200 shadow-lg" : "bg-slate-200"
       }`}
     >
-      <div className="flex px-6 py-4 items-center">
+      <div className="flex px-2 py-2 items-center mx-28">
         <div className="flex items-center">
           <Link to="/staking">
-            <div className="flex gap-3 items-center">
-              <img src={Logo} alt="Pair Stake Logo" className="w-20" />
-              <div className="border-l-2 border-primary-100 px-2 text-primary-100">
-                <h1 className="font-bold">Pair Stake</h1>
+            <div className="flex items-center">
+              <img src={Logo} alt="Trade Bridge Logo" className="w-40" />
+              <div className="border-l-2 border-primary-100 px-2 text-black">
+                <h1 className="font-bold text-2xl">Trade Bridge</h1>
               </div>
             </div>
           </Link>
@@ -115,22 +115,7 @@ const Header = ({ setSigner, setAccount }) => {
 
         <div className="hidden md:flex flex-col gap-4 md:flex-row md:flex-1 md:justify-end items-center space-y-4 md:space-y-0 md:space-x-2">
           <nav className="flex flex-col items-center gap-4 md:flex-row space-y-6 md:space-y-0 md:space-x-2 px-5 text-nowrap text-sm font-semibold">
-          
-            {/* Owner Dashboard Link */}
-            <Link
-              to="/owner-dashboard"
-              className="bg-primary-300 text-white flex items-center gap-1 px-8 py-3 rounded-md focus:outline-none"
-            >
-              Owner Dashboard
-            </Link>
-
-            {/* Staking Pool Link */}
-            <Link
-              to="/staking"
-              className="bg-primary-300 text-white flex items-center gap-1 px-8 py-3 rounded-md focus:outline-none"
-            >
-              Staking Pool
-            </Link>
+        
 
             <div className="relative">
               {!account ? (
