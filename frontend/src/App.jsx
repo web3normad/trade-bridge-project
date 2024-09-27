@@ -88,7 +88,7 @@ function App() {
   );
 }
 
-// Wrap the App component with Router
+
 const WrappedApp = () => (
   <Router>
     <App />

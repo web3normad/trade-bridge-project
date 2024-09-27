@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Buttons from "../../components/Buttons";
-// Import ethers and your contract's ABI
 import { ethers } from "ethers";
 import { PinataSDK } from "pinata";
 import TradeBridgeABI from "../../../TradeBridge.json";
@@ -45,8 +44,7 @@ const CreateCommodity = () => {
           });
           console.log(upload);
 
-          // Store the image CID in state
-          setImageOne(upload.cid);
+            setImageOne(upload.cid);
         } catch (error) {
           console.error("Error uploading file:", error);
         }
@@ -86,7 +84,7 @@ const CreateCommodity = () => {
         const contractAddress = import.meta.env.VITE_TRADE_BRIDGE_SCA;
         console.log("Contract Address:", contractAddress);
 
-        // Check if contractAddress is valid
+        
         if (!contractAddress || !ethers.isAddress(contractAddress)) {
           console.error("Invalid contract address:", contractAddress);
           alert("Contract address is not defined or invalid.");
@@ -119,7 +117,7 @@ const CreateCommodity = () => {
           location
         );
 
-        await tx.wait(); // Wait for the transaction to be mined
+        await tx.wait(); 
         alert("Commodity created successfully!");
       } catch (error) {
         console.error("Error creating commodity:", error);
