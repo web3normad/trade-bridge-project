@@ -24,9 +24,10 @@ contract TradeBridge {
         string imageTwo;
         string imageThree;
         string imageFour;
-        uint createdAt;
         string commodityLocation;
         bool isAvailable;
+        bool hasReceived;
+        uint createdAt;
     }
 
     struct Sale {
@@ -40,12 +41,14 @@ contract TradeBridge {
     Sale[] public sales;
 
     mapping(address => uint[]) public userCommodities;
+    mapping(address => mapping(uint => bool)) public userCommoditiesInvolved;
 
     event CommodityPurchased(address indexed buyer, uint commodityId, uint quantity, uint amount);
     event CommodityAdded(address indexed seller, uint commodityId, string commodityTitle, string commodityDescription, uint commodityQuantity, string quantityMeasurement, string imageOne, string imageTwo, string imageThree, string imageFour, uint createdAt, string commodityLocation);
     event Rating(address indexed seller, bool rating);
-    event DisputeRaised(address indexed defaulter, address indexed reporter, uint commodityId);
+    event DisputeRaised(address indexed defaulter, address indexed reporter, uint commodityId, string report);
     event DisputeResolved(address indexed defaulter, address indexed reporter);
+    event CommodityReceived(address indexed buyer, uint commodityId);
 
     constructor() {
         owner = msg.sender;
@@ -82,6 +85,7 @@ contract TradeBridge {
             imageFour: _imageFour,
             createdAt: block.timestamp,
             commodityLocation: _commodityLocation,
+            hasReceived: false,
             isAvailable: true
         });
         
@@ -128,10 +132,43 @@ contract TradeBridge {
             quantity: _quantity
         }));
 
+        userCommoditiesInvolved[msg.sender][_commodityId] = true;
+
+        if (commodity.commodityQuantity == 0) {
+            commodity.isAvailable = false;
+        }
+
         emit CommodityPurchased(msg.sender, _commodityId, _quantity, totalAmount);
     }
 
     function setTransactionFee(uint _fee) external onlyOwner {
         transactionFee = _fee;
+    }
+
+    function haveReceived(uint _commodityId) external {
+        require(_commodityId > 0 && _commodityId < nextCommodityId, "Error: Commodity does not exist");
+        require(userCommoditiesInvolved[msg.sender][_commodityId], "Error: You have not been involved in a sale for this commodity");
+
+        Sale memory sale;
+        bool saleFound = false;
+        for (uint i = 0; i < sales.length; i++) {
+            if (sales[i].buyer == msg.sender && sales[i].commodityId == _commodityId) {
+                sale = sales[i];
+                saleFound = true;
+                break;
+            }
+        }
+
+        require(saleFound, "Error: Sale not found");
+
+        Commodity storage commodity = allCommodities[_commodityId - 1];
+        commodity.isAvailable = false;
+        
+        uint totalAmount = commodity.pricePerQuantity * sale.quantity;
+        require(ITBTK(address(this)).balanceOf(address(this)) >= totalAmount, "Error: Insufficient contract balance to transfer to seller");
+        
+        ITBTK(address(this)).transfer(sale.seller, totalAmount);
+
+        emit CommodityReceived(msg.sender, _commodityId);
     }
 }
