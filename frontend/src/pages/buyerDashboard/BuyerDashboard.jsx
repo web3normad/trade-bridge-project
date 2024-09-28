@@ -6,12 +6,20 @@ const BuyerDashboard = ({ signer }) => {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-72 bg-primary-200 text-black text-lg p-6 shadow-lg">
-        <h1 className="text-2xl font-bold mb-6">Buyer Dashboard</h1>
+        <h1 className="text-2xl font-bold mt-20 mb-6">Buyer</h1>
         <ul className="space-y-4">
+        <li>
+            <Link
+              to="marketplace"
+              className="bg-yellow-500 block p-3 hover:bg-white rounded-lg transition-all duration-300"
+            >
+              Marketplace
+            </Link>
+          </li>
           <li>
             <Link
               to="view-purchase"
-              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+              className="bg-yellow-500 block p-3 hover:bg-white rounded-lg transition-all duration-300"
             >
               View My Purchases
             </Link>
@@ -19,7 +27,7 @@ const BuyerDashboard = ({ signer }) => {
           <li>
             <Link
               to="dispute-sale"
-              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+              className="bg-yellow-500 block p-3 hover:bg-white rounded-lg transition-all duration-300"
             >
               Dispute
             </Link>

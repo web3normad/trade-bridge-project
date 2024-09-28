@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { Link, BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import './App.css';
@@ -64,7 +64,7 @@ function App() {
       {/* Main content */}
       <main className="flex-grow w-full h-full bg-primary-100">
         <Routes>
-          <Route path="/" element={<SellerDashboard signer={signer} />}>
+          <Route path="/seller-dashboard" element={<SellerDashboard signer={signer} />}>
             {/* Nested routes for the Seller Dashboard */}
             <Route path="create-commodity" element={<CreateCommodity />} />
             <Route path="orders" element={<Orders />} />
@@ -77,7 +77,7 @@ function App() {
             <Route path="view-purchase" element={<ViewPurchase />} />
             <Route path="dispute-sale" element={<DisputeSale />} />
           </Route>
-          <Route path="/hero" element={<Hero />} />
+          <Route path="/" element={<Hero />} />
           <Route path="/market-place" element={<MarketPlace signer={signer} />} />
         </Routes>
       </main>

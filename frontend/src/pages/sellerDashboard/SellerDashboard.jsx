@@ -2,16 +2,17 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 const SellerDashboard = ({ signer }) => {
+  console.log(window.location)
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-72 bg-primary-200 text-black text-lg p-6 shadow-lg">
-        <h1 className="text-2xl font-bold mb-6">Seller Dashboard</h1>
+        <h1 className="text-2xl font-bold mt-20 mb-6">Seller</h1>
         <ul className="space-y-4">
           <li>
             <Link
               to="create-commodity"
-              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+              className="bg-yellow-500 block p-3 hover:bg-white rounded-lg transition-all duration-300"
             >
               Create Commodity
             </Link>
@@ -19,7 +20,7 @@ const SellerDashboard = ({ signer }) => {
           <li>
             <Link
               to="orders"
-              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+              className="bg-yellow-500 block p-3 hover:bg-white rounded-lg transition-all duration-300"
             >
               Orders
             </Link>
@@ -27,7 +28,7 @@ const SellerDashboard = ({ signer }) => {
           <li>
             <Link
               to="my-commodity"
-              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+              className="bg-yellow-500 block p-3 hover:bg-white rounded-lg transition-all duration-300"
             >
               My Commodity
             </Link>
@@ -35,7 +36,7 @@ const SellerDashboard = ({ signer }) => {
           <li>
             <Link
               to="dispute"
-              className="block p-3 hover:bg-primary-300 rounded-lg transition-all duration-300"
+              className="bg-yellow-500 block p-3 hover:bg-white rounded-lg transition-all duration-300"
             >
               Dispute
             </Link>

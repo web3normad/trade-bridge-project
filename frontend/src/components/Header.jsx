@@ -16,6 +16,7 @@ const Header = ({ setSigner, setAccount }) => {
   const connectWallet = async () => {
     if (typeof window.ethereum !== "undefined") {
       console.log("MetaMask detected");
+      console.log('clicked')
       try {
         // Create a new provider using ethers.BrowserProvider
         const provider = new ethers.BrowserProvider(window.ethereum);
@@ -29,6 +30,7 @@ const Header = ({ setSigner, setAccount }) => {
         
         setSigner(userSigner);
         setAccount(accounts[0]);
+        setAccountState(accounts[0]);
         console.log("Connected account:", accounts[0]);
       } catch (error) {
         if (error.code === 4001) {
@@ -64,6 +66,7 @@ const Header = ({ setSigner, setAccount }) => {
   useEffect(() => {
     const accountsChangedHandler = (accounts) => {
       if (accounts.length > 0) {
+        console.log(accounts[0])
         setAccountState(accounts[0]);
         setAccount(accounts[0]);
       } else {
@@ -87,7 +90,7 @@ const Header = ({ setSigner, setAccount }) => {
   return (
     <div className={`fixed top-0 left-0 w-full z-50 transition-shadow duration-300 ${isScrolled ? "bg-slate-200 shadow-lg" : "bg-slate-200"}`}>
       <div className="flex px-2 py-2 items-center mx-10">
-        <Link to="/market-place">
+        <Link to="/">
           <div className="flex items-center">
             <img src={Logo} alt="Trade Bridge Logo" className="w-20" />
             <div className="border-l-2 border-primary-100 px-2 text-black">
@@ -113,7 +116,7 @@ const Header = ({ setSigner, setAccount }) => {
               ) : (
                 <div className="relative">
                   <button onClick={() => setDropdownOpen(!dropdownOpen)} className="bg-primary-300 text-white flex items-center gap-1 px-8 py-3 rounded-md focus:outline-none">
-                    {`${account.slice(0, 6)}...${account.slice(-4)}`}
+                    {`${account.address.slice(0, 6)}...${account.address.slice(-4)}`}
                   </button>
                   {dropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
@@ -150,7 +153,7 @@ const Header = ({ setSigner, setAccount }) => {
               ) : (
                 <div className="relative">
                   <button onClick={() => setDropdownOpen(!dropdownOpen)} className="bg-primary-300 text-white flex items-center gap-1 px-2 py-3 rounded-md focus:outline-none">
-                    {`${account.slice(0, 6)}...${account.slice(-4)}`}
+                    {`${account.address.slice(0, 6)}...${account.address.slice(-4)}`}
                   </button>
                   {dropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">

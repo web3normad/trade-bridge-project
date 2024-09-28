@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import illustration from "../assets/images/illustration.png";
 
 const Hero = () => {
@@ -9,7 +10,7 @@ const Hero = () => {
           <h1 className="text-4xl font-bold text-wrap">
             A decentralized commodity <br /> market place
           </h1>
-          <p className="text-wrap text-xl">
+          <p className="text-wrap text-xl mb-3">
             <span className="block">
               Trade bridge is a decentralized commodity exchange platform
             </span>
@@ -27,7 +28,21 @@ const Hero = () => {
             </span>
           </p>
 
-          <button className="bg-yellow-500 p-3 rounded-lg">Explore more</button>
+          <div className="mt-3">
+          <Link
+            to="buyer-dashboard/marketplace"
+            className="bg-yellow-500 p-4 mr-2 rounded-lg transition-all duration-300"
+          >
+            Buy
+          </Link>
+
+          <Link
+            to="seller-dashboard/create-commodity"
+            className="bg-primary-200 p-4 mr-2 rounded-lg transition-all duration-300"
+          >
+            Sell
+          </Link>
+          </div>
         </div>
         <div className="mt-20">
         <img src={illustration} alt="Buyer and Seller" className="w-[1020px]" />
