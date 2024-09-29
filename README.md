@@ -11,17 +11,19 @@
 4. [Features](#features)
 5. [Future Features / Roadmap](#future-features-roadmap)
 6. [Technologies](#technologies)
+7. [Deployed Contract Address](#deployed-contract-address)
+8. [Pitch Deck](#pitch-deck)
 
 
 ## Installation
  clone the repository
 ```
-git clone https://github.com/dimka90/Block-Bridge.git
+git clone https://github.com/devopsnormad/trade-bridge-project.git
 ```
 
  ## Navigate to the project directory:
     ```bash
-    cd Block-Bridge
+    cd trade-bridge
     ```
 
  ## Install dependencies:
@@ -101,7 +103,18 @@ The following technologies were used to build this project:
 - **Node.js**: Runtime environment for running JavaScript code on the server.
 - **Mocha/Chai**: Testing framework for writing unit tests for smart contracts.
 - **Git**: Version control system to track changes and collaborate on the project.
+
 - **Openzepplin**: Used the ERC1155 library
 
 - **LISK Blockchain** : 
-Lisk is a blockchain platform designed to make it easier for developers to create decentralized applications (dApps) using JavaScript. 
+Lisk is a blockchain platform designed to make it easier for developers to create decentralized applications (dApps) using JavaScript.
+
+ ###Deloyed Contract Address
+ 0x0925bd29906877bc143EB1FcE74D0F58d05fb0B4
+
+ ###Pitch Deck Link
+ https://docs.google.com/presentation/d/1T4nuWUx1GStMJKIeAVNcZq0e6JdieVRAZLtg-33_zBY/edit?usp=sharing
+ 
+ 
+
+
