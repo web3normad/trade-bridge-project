@@ -78,7 +78,7 @@ const SellerDashboard = ({ signer }) => {
 </div>
 
 <div className="col-span-4 bg-gray-800 p-6 rounded-lg shadow-lg">
-  <h4 className="font-bold mb-4">Recent Orders</h4>
+  <h4 className="font-bold mb-4">Recent Purchase</h4>
   <table className="w-full text-left table-auto">
     <thead>
       <tr>
@@ -98,17 +98,15 @@ const SellerDashboard = ({ signer }) => {
         <td className="px-4 py-2 bg-yellow-600 opacity-50 text-white rounded-full mb-3">Pending</td> {/* Add mb-2 for spacing */}
         <td className="px-4 py-2">$120.00</td>
         <td className="px-4 py-2">
-          <button className="text-red-500">Delete</button>
         </td>
       </tr>
       <tr className="space-y-2"> {/* Add margin-bottom here for each row */}
         <td className="px-4 py-2">2</td>
         <td className="px-4 py-2">6:00am</td>
         <td className="px-4 py-2">Lorem ipsum dolor sit amet</td>
-        <td className="px-4 py-2 bg-yellow-600 opacity-50  text-white rounded-full mb-3">Pending</td> {/* Add mb-2 for spacing */}
+        <td className="px-4 py-2 bg-green-600 opacity-50  text-white rounded-full mb-3">Completed</td> {/* Add mb-2 for spacing */}
         <td className="px-4 py-2">$150.00</td>
         <td className="px-4 py-2">
-          <button className="text-red-500">Delete</button>
         </td>
       </tr>
     </tbody>

@@ -5,8 +5,8 @@ import { FaPlus, FaBoxOpen, FaGavel, FaTicketAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const [currentAccount, setCurrentAccount] = useState(null); // Track current wallet address
-  const [isConnected, setIsConnected] = useState(false); // Track connection status
+  const [currentAccount, setCurrentAccount] = useState(null); 
+  const [isConnected, setIsConnected] = useState(false); 
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -46,6 +46,7 @@ const Navbar = () => {
     <div className='bg-gray-900 pt-5'>
       {/* Top Navigation Bar */}
       <header className="flex justify-between items-center py-4 px-10 border rounded-full mx-5 bg-gray-800">
+       <Link to="/hero">
         <div className="text-2xl font-bold flex gap-2 items-center">
           <img
             src={Logo}
@@ -54,6 +55,7 @@ const Navbar = () => {
           />
           <span className="mr-4 text-white">Trade<span className='text-orange-500'>Bridge</span></span>
         </div>
+        </Link>
         <div className="flex items-center space-x-4">
           {/* Wallet Connect Button */}
           {isConnected && typeof currentAccount === 'string' ? (

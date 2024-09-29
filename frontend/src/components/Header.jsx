@@ -24,7 +24,7 @@ const Header = () => {
       <div className="relative min-h-24 flex md:flex-row">
         {/* Left Half - Dark Blue */}
         <div className="w-[57%] bg-[#141C2B] py-4 px-4 md:px-10 flex justify-between items-center relative">
-          <Link to="/">
+          <Link to="/hero">
             <div className="flex bg-[#182130] rounded-full items-center py-2 px-3 shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
               <img
                 src={Logo}

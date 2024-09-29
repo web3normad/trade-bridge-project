@@ -59,6 +59,7 @@ function App() {
         <Routes>
           {/* Route for Hero */}
           <Route path="/" element={<Hero />} />
+          <Route path="/hero" element={<Hero />} />
 
           {/* Seller Dashboard */}
           <Route path="/seller-dashboard" element={<SellerDashboard signer={signer} />} />
