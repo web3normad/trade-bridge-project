@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 const SellerDashboard = ({ signer }) => {
-  console.log(window.location)
+  const path = window.location.pathname;
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}

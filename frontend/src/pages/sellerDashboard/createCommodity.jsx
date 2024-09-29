@@ -8,7 +8,7 @@ import TradeBridgeABI from "../../../TradeBridge.json";
 const CreateCommodity = () => {
   const pinata = new PinataSDK({
     pinataJwt:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzYmYxZmFiYy0xYzAxLTRiOTItYTYzOS1iNjNjYTQ1NTY4NmEiLCJlbWFpbCI6Imt2bmc2NTZAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiRlJBMSJ9LHsiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiTllDMSJ9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6ImJkYzg1NGRjMTI4YTMwYjUzNTY0Iiwic2NvcGVkS2V5U2VjcmV0IjoiODlmZmU4NGRkZjQ4MDgwZGRlZDEzZTkwYjJiMzIzODY4M2NkMjY1ODFhOTQwOGFmNjcxNmJkNWM0YmIzN2Q2ZCIsImV4cCI6MTc1ODkyOTU4NH0.8V2wO6sqlAkZGwkA28rf32DyeekyGjjRykhWAx62Iz8",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJjMTg5ZWQ3MC1jYjczLTRhMjItYmIxNS01NDlkNDMyZDBkMWEiLCJlbWFpbCI6ImRpbWtheWlscml0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJjMzdjMGM4M2U2NzY3NjU3NTViMiIsInNjb3BlZEtleVNlY3JldCI6IjFmODg2NmVmM2YxYTQ2YjhkODEwNjVkMjE0MDM5N2YzNzQ0NzMxYzU4YmQ1NzJiOThiMzU1YzNjOWE0ZDFmOTAiLCJleHAiOjE3NTkwNzQxOTl9.vLweD79JOQF4ipLiGMQdyLyukEiClF9pHY34mu77J6Q",
     pinataGateway: "cyan-hilarious-cuckoo-772.mypinata.cloud",
   });
 
@@ -31,7 +31,8 @@ const CreateCommodity = () => {
 
       reader.onloadend = async () => {
         try {
-          const base64Data = reader.result.split(",")[1]; // Get the base64 part of the data URL
+          const base64Data = reader.result.split(",")[1];
+          console.log(base64Data) // Get the base64 part of the data URL
           const blob = new Blob([
             new Uint8Array(
               await (await fetch(`data:image/jpeg;base64,${base64Data}`)).blob()
