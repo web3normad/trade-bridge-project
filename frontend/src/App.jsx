@@ -25,6 +25,7 @@ function App() {
       try {
         // Create a new provider using ethers.BrowserProvider
         const provider = new ethers.BrowserProvider(window.ethereum);
+        new ethers.InfuraProvider
         
         // Request account access
         await window.ethereum.request({ method: "eth_requestAccounts" });

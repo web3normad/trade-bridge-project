@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import images from '../components/Images';
+import { ethers } from 'ethers';
 
 const MarketPlace = () => {
   const navigate = useNavigate();
   const agriculturalCommodities = images.agricultural;
   const solidMineralCommodities = images.solidMinerals;
 
+  const [commodities, setCommodities] = useState([]);
   const [showMoreAgri, setShowMoreAgri] = useState(false);
   const [showMoreSolid, setShowMoreSolid] = useState(false);
 
@@ -20,6 +22,30 @@ const MarketPlace = () => {
   const handleCardClick = (commodity) => {
     setSelectedCommodity(commodity);
   };
+
+    
+  useEffect(() => {
+    const fetchCommodities = async () => {
+      if (window.ethereum) {
+        try {
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          const signer = await provider.getSigner();
+          
+          const contractAddress = import.meta.env.VITE_TRADE_BRIDGE_SCA; 
+          const commodityContract = new ethers.Contract(contractAddress, TradeBridgeABI, signer);
+
+         
+          const userAddress = await signer.getAddress();
+          const userCommodities = await commodityContract.getCommoditiesByOwner(userAddress); 
+          setCommodities(userCommodities);
+        } catch (error) {
+          console.error("Error fetching commodities:", error);
+        }
+      }
+    };
+
+    fetchCommodities();
+  }, []);
 
   const handlePurchaseClick = () => {
     // Pass the selected commodity details (including seller's address) to the Purchase page

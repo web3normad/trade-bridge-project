@@ -28,17 +28,17 @@ const Hero = () => {
             </span>
           </p>
 
-          <div className="mt-3">
+          <div className="mt-8">
           <Link
             to="buyer-dashboard/marketplace"
-            className="bg-yellow-500 p-4 mr-2 rounded-lg transition-all duration-300"
+            className="bg-[#59b5f7] text-white w-5 p-4 px-20 mr-2 rounded-lg"
           >
             Buy
           </Link>
 
           <Link
             to="seller-dashboard/create-commodity"
-            className="bg-primary-200 p-4 mr-2 rounded-lg transition-all duration-300"
+            className="bg-[#274ab3] text-white w-5 p-4 px-20 mr-2 rounded-lg transition-all duration-300"
           >
             Sell
           </Link>
