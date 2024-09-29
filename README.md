@@ -13,6 +13,7 @@
 6. [Technologies](#technologies)
 7. [Deployed Contract Address](#deployed-contract-address)
 8. [Pitch Deck](#pitch-deck)
+9. [YouTube Link](#youtube-link)
 
 
 ## Installation
@@ -114,6 +115,10 @@ Lisk is a blockchain platform designed to make it easier for developers to creat
 
  ###Pitch Deck Link
  https://docs.google.com/presentation/d/1T4nuWUx1GStMJKIeAVNcZq0e6JdieVRAZLtg-33_zBY/edit?usp=sharing
+
+ ###YouTube Link
+ https://youtu.be/6OV_KiR_mHY
+ 
  
  
 
