@@ -4,6 +4,7 @@ import { FaPlus, FaBoxOpen, FaGavel, FaTicketAlt } from 'react-icons/fa';
 import Logo from "../../assets/images/trade_bridge.png"
 
 const SellerDashboard = ({ signer }) => {
+  const path = window.location.pathname;
   return (
     <div className="h-auto bg-gray-900 text-white pt-5">
      
