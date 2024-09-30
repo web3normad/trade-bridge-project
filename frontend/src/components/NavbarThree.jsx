@@ -5,8 +5,8 @@ import { FaPlus, FaBoxOpen, FaGavel, FaTicketAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const [currentAccount, setCurrentAccount] = useState(null); // Track current wallet address
-  const [isConnected, setIsConnected] = useState(false); // Track connection status
+  const [currentAccount, setCurrentAccount] = useState(null); 
+  const [isConnected, setIsConnected] = useState(false); 
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -53,10 +53,9 @@ const Navbar = () => {
             alt="Trade Bridge Logo"
             className="w-10 md:w-[32px]"
           />
-          <span className="mr-4 text-white">Trade<span className='text-primary-500'>Bridge</span></span>
+          <span className="mr-4 text-white">Trade<span className='text-orange-500'>Bridge</span></span>
         </div>
         </Link>
-
         <div className="flex items-center space-x-4">
           {/* Wallet Connect Button */}
           {isConnected && typeof currentAccount === 'string' ? (
@@ -71,30 +70,25 @@ const Navbar = () => {
               Connect Wallet
             </button>
           )}
-
-          <Link to="/seller-dashboard/create-commodity" className="px-4 text-white py-2 bg-gray-700 border border-primary-500 rounded-full flex items-center">
-            Add Product <FaPlus className="ml-2 bg-primary-500w-6 h-6 p-2 rounded-full" /> 
-          </Link>
+         
         </div>
       </header>
-
-      <div className="flex justify-between space-x-4 py-4 px-10 border rounded-full mx-5 mt-4 bg-gray-800">
-        <div className='flex gap-4'>
-          <Link to="seller-dashboard/my-commodity" className="px-4 py-2 bg-gray-700 border text-white border-primary-500 hover:bg-primary-500 rounded-full flex items-center">
-            My Products <FaBoxOpen className="ml-2" /> 
-          </Link>
-          <Link to="/disputes" className="px-4 py-2 bg-gray-700 border text-white border-primary-500 hover:bg-primary-500rounded-full flex items-center">
-            Disputes <FaGavel className="ml-2" /> 
-          </Link>
+           {/* Search Filter Section */}
+      <div className="flex justify-between border border-white rounded-full py-4 px-10 items-center mx-5 mt-7">
+        <div className="flex space-x-4">
+          <button className="text-sm text-white px-4 py-2 bg-gray-700 rounded-full">Categories</button>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="bg-gray-800 text-gray-300 px-4 py-2 rounded-full"
+          />
+          <button className="px-8 py-2 bg-primary-500 text-white rounded-full">Search</button>
         </div>
-        <div>
-          <Link to="/create-ticket" className="px-4 py-2 bg-gray-700 border border-primary-500 text-white rounded-full flex items-center">
-            Create a ticket <FaTicketAlt className="ml-2 bg-primary-500w-7 h-7 p-2 rounded-full" /> 
-          </Link>
-        </div>
+        <button className="px-8 py-2 bg-gray-800 text-white rounded-full border border-primary-500">Filters</button>
       </div>
+   
     </div>
   );
-};
+}
 
 export default Navbar;

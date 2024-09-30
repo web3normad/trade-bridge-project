@@ -35,22 +35,22 @@ const SellerDashboard = ({ signer }) => {
           <ul>
             <li className="flex justify-between items-center mb-2">
               <span>Rice</span>
-              <span className="bg-orange-500 h-2 w-3/4 rounded-lg"></span>
+              <span className="bg-primary-500 h-2 w-3/4 rounded-lg"></span>
               <span>83%</span>
             </li>
             <li className="flex justify-between items-center mb-2">
               <span>Millet</span>
-              <span className="bg-orange-500 h-2 w-3/5 rounded-lg"></span>
+              <span className="bg-primary-500 h-2 w-3/5 rounded-lg"></span>
               <span>74%</span>
             </li>
             <li className="flex justify-between items-center mb-2">
               <span>Corn</span>
-              <span className="bg-orange-500 h-2 w-1/2 rounded-lg"></span>
+              <span className="bg-primary-500 h-2 w-1/2 rounded-lg"></span>
               <span>53%</span>
             </li>
             <li className="flex justify-between items-center mb-2">
               <span>Ginger</span>
-              <span className="bg-orange-500 h-2 w-1/3 rounded-lg"></span>
+              <span className="bg-primary-500 h-2 w-1/3 rounded-lg"></span>
               <span>38%</span>
             </li>
           </ul>
@@ -91,20 +91,20 @@ const SellerDashboard = ({ signer }) => {
       </tr>
     </thead>
     <tbody>
-      <tr className="mb-2"> {/* Add margin-bottom here for each row */}
+      <tr className="mb-2">
         <td className="px-4 py-2">1</td>
         <td className="px-4 py-2">5:40am</td>
         <td className="px-4 py-2">Lorem ipsum dolor sit</td>
-        <td className="px-4 py-2 bg-yellow-600 opacity-50 text-white rounded-full mb-3">Pending</td> {/* Add mb-2 for spacing */}
+        <td className="px-4 py-2 bg-yellow-600 opacity-50 text-white rounded-full mb-3">Pending</td> 
         <td className="px-4 py-2">$120.00</td>
         <td className="px-4 py-2">
         </td>
       </tr>
-      <tr className="space-y-2"> {/* Add margin-bottom here for each row */}
+      <tr className="space-y-2"> 
         <td className="px-4 py-2">2</td>
         <td className="px-4 py-2">6:00am</td>
         <td className="px-4 py-2">Lorem ipsum dolor sit amet</td>
-        <td className="px-4 py-2 bg-green-600 opacity-50  text-white rounded-full mb-3">Completed</td> {/* Add mb-2 for spacing */}
+        <td className="px-4 py-2 bg-green-600 opacity-50  text-white rounded-full mb-3">Completed</td> 
         <td className="px-4 py-2">$150.00</td>
         <td className="px-4 py-2">
         </td>
