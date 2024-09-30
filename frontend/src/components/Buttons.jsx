@@ -4,7 +4,7 @@ import { FaWallet } from 'react-icons/fa';
 const ConnectWalletButton = ({ onClick }) => {
   return (
     <button
-      onClick={onClick} // Add the onClick handler here
+      onClick={onClick} // Add  the onClick handler here
       className="flex items-center space-x-2 bg-gradient-to-r from-orange-400 to-yellow-500 text-gray-600 px-6 py-3 rounded-full shadow-md hover:scale-105 transform transition duration-300 ease-in-out"
     >
       <FaWallet size={20} /> {/* Wallet Icon */}
